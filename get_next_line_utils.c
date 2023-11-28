@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 10:09:55 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/11/22 11:43:15 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:29:03 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ int	ft_strchr(const char *s, int c)
 	if (!s)
 		return (0);
 	while (s[i])
+	{
 		if (s[i] == c)
 			return (i + 1);
+		i++;
+	}
 	return (0);
 }
 
@@ -88,7 +91,7 @@ void	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	j = 0;
 	if (!s1)
-		s1 = "";
+		s1 = ft_calloc(sizeof(char), 1);
 	if (!s2)
 		s2 = "";
 	fstr = ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
