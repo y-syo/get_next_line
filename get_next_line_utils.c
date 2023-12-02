@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 10:09:55 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/11/28 16:29:03 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:49:38 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_calloc(size_t elsize, size_t size)
 
 	if (!elsize || !size)
 		return (NULL);
-	if ((elsize * size) / size != elsize)
+	if ((size * elsize) / elsize != size)
 		return (NULL);
 	ptr = malloc(elsize * size);
 	if (!ptr)
@@ -103,8 +103,10 @@ void	*ft_strjoin(char *s1, char *s2)
 		i++;
 	}
 	free(s1);
+	s1 = NULL;
 	while (s2[j++])
 		fstr[i + j - 1] = s2[j - 1];
 	free(s2);
+	s2 = NULL;
 	return (fstr);
 }
