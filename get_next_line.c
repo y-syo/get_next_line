@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 03:23:51 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/12/02 00:27:05 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/12/06 02:20:27 by yosyo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ char	*get_next_line(int fd)
 	static char	*stash = NULL;
 	char		*tmp;
 	char		*line;
-	size_t		n_read;
+	ssize_t		n_read;
 
-	if (fd < 0 || fd >= 1024 || BUFFER_SIZE < 1)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1)
 		return (NULL);
 	tmp = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!tmp)
@@ -35,9 +35,12 @@ char	*get_next_line(int fd)
 		n_read = read(fd, tmp, BUFFER_SIZE);
 	line = ft_calloc(sizeof(char), 1);
 	if (!line)
+	{
+		free(tmp);
 		return (NULL);
+	}
 	tmp = ft_strjoin(stash, tmp);
-	while (n_read)
+	while (n_read > 0)
 	{
 		if (ft_strchr(tmp, '\n'))
 		{
@@ -50,11 +53,20 @@ char	*get_next_line(int fd)
 	}
 	free(tmp);
 	if (stash)
-	{
-		free(stash);
 		stash = NULL;
-		if (!line[0])
-			return (NULL);
-	}
+	if (!line[0])
+		return (NULL);
 	return (line);
 }
+/*
+#include <stdio.h>
+#include <fcntl.h>
+
+int	main(void)
+{
+	int	fd;
+
+	fd = open("test.txt", O_RDONLY);
+	while (printf("%s", get_next_line(fd)) != 6);
+	close (fd);
+}*/
