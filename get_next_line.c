@@ -6,13 +6,51 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 03:23:51 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/12/07 19:07:36 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:15:53 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
+#include <fcntl.h>
 
-static char	*get_line(char **tmp, char **line)
+char	*get_line(char *stash, char *tmp)
+{
+	char	*result;
+
+	tmp = ft_strjoin(stash, tmp);
+	stash = ft_substr(tmp, ft_strchr(tmp, '\n'), ft_strlen(tmp) - ft_strchr(tmp, '\n'));
+	result = ft_substr(tmp, 0, ft_strchr(tmp, '\n') + 1);
+	free(tmp);
+	return (result);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash = NULL;
+	char		*tmp;
+	int			n_read;
+
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 1)
+		return (NULL);
+	tmp = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	if (!tmp)
+		return (NULL);
+	n_read = read(fd, tmp, BUFFER_SIZE);
+	while (n_read)
+	{
+		if (ft_strchr(tmp, '\n'))
+			return (get_line(stash, tmp));
+		stash = ft_strjoin(stash, tmp);
+		tmp = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+		if (!tmp)
+			return (NULL);
+		n_read = read(fd, tmp, BUFFER_SIZE);
+	}
+	return (get_line(stash, tmp));
+}
+
+/*static char	*get_line(char **tmp, char **line)
 {
 	*tmp = ft_substr(*tmp, 0, ft_strchr(*tmp, '\n'));
 	*tmp = ft_strjoin(line, tmp);
@@ -66,10 +104,7 @@ char	*get_next_line(int fd)
 		line = NULL;
 	}
 	return (line);
-}
-/*
-#include <stdio.h>
-#include <fcntl.h>
+}*/
 
 int	main(void)
 {
@@ -86,4 +121,4 @@ int	main(void)
 		free(line);
 	}
 	close (fd);
-}*/
+}
