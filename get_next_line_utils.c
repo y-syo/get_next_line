@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 10:09:55 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/11/28 18:49:38 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/12/06 23:57:44 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-void	*ft_strjoin(char *s1, char *s2)
+void	*ft_strjoin(char **s1, char **s2)
 {
 	char	*fstr;
 	size_t	i;
@@ -90,23 +90,23 @@ void	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	if (!s1)
-		s1 = ft_calloc(sizeof(char), 1);
-	if (!s2)
-		s2 = "";
-	fstr = ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!*s1)
+		*s1 = ft_calloc(sizeof(char), 1);
+	if (!*s2)
+		*s2 = ft_calloc(sizeof(char), 1);
+	fstr = ft_calloc(sizeof(char), ft_strlen(*s1) + ft_strlen(*s2) + 1);
 	if (!fstr)
 		return (NULL);
-	while (s1[i])
+	while ((*s1)[i])
 	{
-		fstr[i] = s1[i];
+		fstr[i] = (*s1)[i];
 		i++;
 	}
-	free(s1);
-	s1 = NULL;
-	while (s2[j++])
-		fstr[i + j - 1] = s2[j - 1];
-	free(s2);
-	s2 = NULL;
+	free(*s1);
+	*s1 = NULL;
+	while ((*s2)[j++])
+		fstr[i + j - 1] = (*s2)[j - 1];
+	free(*s2);
+	*s2 = NULL;
 	return (fstr);
 }
