@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 03:23:51 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/12/07 23:15:53 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/12/11 10:06:50 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-char	*get_line(char *stash, char *tmp)
+/*char	*get_line(char *stash, char *tmp)
 {
 	char	*result;
 
 	tmp = ft_strjoin(stash, tmp);
-	stash = ft_substr(tmp, ft_strchr(tmp, '\n'), ft_strlen(tmp) - ft_strchr(tmp, '\n'));
+	stash = ft_substr(tmp, ft_strchr(tmp, '\n'), \
+			ft_strlen(tmp) - ft_strchr(tmp, '\n'));
 	result = ft_substr(tmp, 0, ft_strchr(tmp, '\n') + 1);
 	free(tmp);
 	return (result);
@@ -48,13 +49,16 @@ char	*get_next_line(int fd)
 		n_read = read(fd, tmp, BUFFER_SIZE);
 	}
 	return (get_line(stash, tmp));
-}
+}*/
 
-/*static char	*get_line(char **tmp, char **line)
+char	*get_line(char *tmp, char *line)
 {
-	*tmp = ft_substr(*tmp, 0, ft_strchr(*tmp, '\n'));
-	*tmp = ft_strjoin(line, tmp);
-	return (*tmp);
+	char	*newline;
+
+	newline = ft_substr(tmp, 0, ft_strchr(tmp, '\n'));
+	free(tmp);
+	tmp = ft_strjoin(line, newline);
+	return (tmp);
 }
 
 char	*get_next_line(int fd)
@@ -78,17 +82,24 @@ char	*get_next_line(int fd)
 		free(tmp);
 		return (NULL);
 	}
-	tmp = ft_strjoin(&stash, &tmp);
+	tmp = ft_strjoin(stash, tmp);
+	stash = ft_calloc(sizeof(char), 1);
+	if (!stash)
+	{
+		free(tmp);
+		free(line);
+		return (NULL);
+	}
 	while (n_read > 0)
 	{
 		if (ft_strchr(tmp, '\n'))
 		{
+			free(stash);
 			stash = ft_substr(tmp, ft_strchr(tmp, 10), \
 					ft_strlen(tmp) - ft_strchr(tmp, 10));
-			return (get_line(&tmp, &line));
+			return (get_line(tmp, line));
 		}
-		tmp = ft_substr(tmp, 0, ft_strlen(tmp));
-		line = ft_strjoin(&line, &tmp);
+		line = ft_strjoin(line, tmp);
 		tmp = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 		n_read = read(fd, tmp, BUFFER_SIZE);
 	}
@@ -104,15 +115,15 @@ char	*get_next_line(int fd)
 		line = NULL;
 	}
 	return (line);
-}*/
+}
 
-int	main(void)
+/*int	main(void)
 {
 	int		fd;
 	char	*line;
 
-	fd = open("test.txt", O_RDONLY);
-	while (727)
+	fd = open("gnlTester/files/41_with_nl", O_RDONLY);
+	while (1)
 	{
 		line = get_next_line(fd);
 		if (!line)
@@ -120,5 +131,27 @@ int	main(void)
 		printf("%s", line);
 		free(line);
 	}
+	close (fd);
+}*/
+
+int	main(void)
+{
+	int		fd;
+	char	*line;
+
+	fd = open("gnlTester/files/41_with_nl", O_RDONLY);
+
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+
 	close (fd);
 }

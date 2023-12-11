@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:11:56 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/12/07 20:17:50 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/12/11 10:04:41 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 3
+#  define BUFFER_SIZE 1
 # endif
 
 # include <unistd.h>
