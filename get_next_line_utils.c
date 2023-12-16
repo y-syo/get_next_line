@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 10:09:55 by mmoussou          #+#    #+#             */
-/*   Updated: 2023/12/11 08:43:01 by mmoussou         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:08:42 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,11 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	nl;
 	char	*r;
 
-	if (!s)
+	if (!s || !len)
 		return (NULL);
 	l = ft_strlen(s);
 	if (start > l)
-	{
-		r = ft_calloc(1, 1);
-		return (r);
-	}
+		return (NULL);
 	nl = ft_strlen(s + start);
 	if (nl > len)
 		nl = len;
