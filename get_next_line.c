@@ -6,7 +6,7 @@
 /*   By: mmoussou <mmoussou@student.42angouleme.fr  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:03:00 by mmoussou          #+#    #+#             */
-/*   Updated: 2024/01/04 11:59:43 by mmoussou         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:53:41 by mmoussou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,12 @@ char	*get_next_line(int fd)
 	line = 0;
 	stash = read_line(fd, stash);
 	if (!stash || !stash[0])
-		return (NULL);
+	{
+		if (stash && !stash[0])
+			free(stash);
+		stash = NULL;
+		return (stash);
+	}
 	line = get_line(stash);
 	stash = get_stash(stash);
 	return (line);
